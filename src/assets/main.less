@@ -1,0 +1,51 @@
+body {
+  width: 450px;
+  color: #2D2F33;
+  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+}
+
+#app {
+  margin: 8px;
+
+  hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  #footer {
+    background-color: #DCDFE6;
+    color: #909399;
+    margin: 0;
+    padding: 10px;
+  }
+
+  form.el-form.el-form--label-top {
+    .el-form-item {
+      margin: 0;
+
+      textarea {
+        resize: vertical;
+        outline: none;
+
+        &#source {
+          height: 120px;
+        }
+
+        &#target {
+          height: 200px;
+        }
+      }
+
+      .el-form-item__label {
+        padding: 0;
+        padding-bottom: 5px;
+        line-height: normal;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+body > #app .el-row {
+  margin: 8px 0;
+}

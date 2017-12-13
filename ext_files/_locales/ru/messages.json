@@ -1,0 +1,44 @@
+{
+  "description": {
+    "message": "Это расширение обеспечивает простой перевод для Chrome Browser"
+  },
+  "defaultTitle": {
+    "message": "Перевести сейчас!"
+  },
+  "author": {
+    "message": "Искандер Камалиев"
+  },
+  "popularLanguage": {
+    "message": "Популярные языки"
+  },
+  "english": {
+    "message": "Англиский"
+  },
+  "russian": {
+    "message": "Русский"
+  },
+  "german": {
+    "message": "Немецкий"
+  },
+  "otherLanguages": {
+    "message": "Другие языки"
+  },
+  "apiError": {
+    "message": "Упс, расширение не работает :("
+  },
+  "textareatPlaceholder": {
+    "message": "Введите текст"
+  },
+  "translate": {
+    "message": "ПЕРЕВОД"
+  },
+  "clear": {
+    "message": "ОЧИСТИТЬ"
+  },
+  "labelSource": {
+    "message": "Источник"
+  },
+  "labelTarget": {
+    "message": "Цель"
+  }
+}

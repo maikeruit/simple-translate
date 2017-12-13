@@ -1,0 +1,44 @@
+{
+  "description": {
+    "message": "This extension get simple translation for Chrome Browser"
+  },
+  "defaultTitle": {
+    "message": "Translate now!"
+  },
+  "author": {
+    "message": "Iskander Kamaliev"
+  },
+  "popularLanguage": {
+    "message": "Popular language"
+  },
+  "english": {
+    "message": "English"
+  },
+  "russian": {
+    "message": "Russian"
+  },
+  "german": {
+    "message": "German"
+  },
+  "otherLanguages": {
+    "message": "Other languages"
+  },
+  "apiError": {
+    "message": "Oops, extension didn't work :("
+  },
+  "textareatPlaceholder": {
+    "message": "Enter text"
+  },
+  "translate": {
+    "message": "TRANSLATE"
+  },
+  "clear": {
+    "message": "CLEAR"
+  },
+  "labelSource": {
+    "message": "Source"
+  },
+  "labelTarget": {
+    "message": "Target"
+  }
+}
