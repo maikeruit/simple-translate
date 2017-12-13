@@ -118,7 +118,6 @@
 
       if (document.execCommand('paste')) {
         this.translate()
-        this.translate()
       }
 
       source.value = ''
