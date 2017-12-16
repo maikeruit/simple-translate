@@ -2,24 +2,18 @@
     <div id="app">
         <el-row type="flex" justify="center">
             <el-col :span="10" style="text-align: left">
-                <el-select size="mini" filterable v-model="source">
-                    <el-option-group v-for="lang in languages" :key="lang.label" :label="lang.label">
-                        <el-option v-for="item in lang.options" :key="item.value" :label="item.label"
-                                   :value="item.value">
-                        </el-option>
-                    </el-option-group>
+                <el-select v-model="source" filterable size="mini" @change="sync">
+                    <el-option v-for="lang in languages" :key="lang.value" :label="lang.label" :value="lang.value">
+                    </el-option>
                 </el-select>
             </el-col>
             <el-col :span="4" style="text-align: center">
                 <el-button size="mini" @click="change" type="success" icon="el-icon-refresh"></el-button>
             </el-col>
             <el-col :span="10" style="text-align: right">
-                <el-select size="mini" filterable v-model="target">
-                    <el-option-group v-for="lang in languages" :key="lang.label" :label="lang.label">
-                        <el-option v-for="item in lang.options" :key="item.value" :label="item.label"
-                                   :value="item.value">
-                        </el-option>
-                    </el-option-group>
+                <el-select size="mini" filterable v-model="target" @change="sync">
+                    <el-option v-for="lang in languages" :key="lang.value" :label="lang.label" :value="lang.value">
+                    </el-option>
                 </el-select>
             </el-col>
         </el-row>
@@ -29,10 +23,9 @@
         <el-form :model="ruleForm" label-position="top" ref="ruleForm">
             <el-row>
                 <el-col :span="24">
-
                     <el-form-item :label="templateData.labelSource" prop="source">
                         <el-input tabindex="1" id="source" :placeholder="templateData.textareatPlaceholder"
-                                  type="textarea" v-model="ruleForm.source"></el-input>
+                                  type="textarea" v-model.trim="ruleForm.source"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -54,7 +47,7 @@
             <el-row>
                 <el-col :span="24">
                     <el-form-item :label="templateData.labelTarget" prop="target">
-                        <el-input type="textarea" id="target" v-model="ruleForm.target"></el-input>
+                        <el-input type="textarea" id="target" v-model.trim="ruleForm.target"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -91,36 +84,37 @@
           labelSource: window.chrome.i18n.getMessage('labelSource'),
           labelTarget: window.chrome.i18n.getMessage('labelTarget')
         },
-        languages: [{
-          label: window.chrome.i18n.getMessage('popularLanguage'),
-          options: [{
+        languages: [
+          {
             value: 'en',
             label: window.chrome.i18n.getMessage('english')
-          }, {
+          },
+          {
             value: 'ru',
             label: window.chrome.i18n.getMessage('russian')
-          }]
-        }, {
-          label: window.chrome.i18n.getMessage('otherLanguages'),
-          options: [{
+          },
+          {
             value: 'de',
             label: window.chrome.i18n.getMessage('german')
-          }]
-        }],
+          }
+        ],
         source: 'en',
         target: 'ru'
       }
     },
     mounted: function () {
-      let source = document.getElementById('source')
-      source.value = ''
-      source.select()
+      if (process.env.NODE_ENV === 'production') {
+        let _this = this
 
-      if (document.execCommand('paste')) {
-        this.translate()
+        window.chrome.storage.sync.get(['source', 'target'], function (items) {
+          if (items) {
+            _this.source = items.source
+            _this.target = items.target
+          }
+
+          _this.pasteAndTranslate()
+        })
       }
-
-      source.value = ''
     },
     methods: {
       translate: function () {
@@ -141,8 +135,6 @@
           })
           .catch(function (response) {
             _this.$message.error(window.chrome.i18n.getMessage('apiError'))
-
-            console.error(response)
           })
       },
       clear: function () {
@@ -152,6 +144,28 @@
         let gap = this.target
         this.target = this.source
         this.source = gap
+
+        this.sync()
+      },
+      sync: function () {
+        if (process.env.NODE_ENV === 'production') {
+          let _this = this
+
+          window.chrome.storage.sync.set({
+            source: _this.source,
+            target: _this.target
+          })
+        }
+      },
+      pasteAndTranslate: function () {
+        let _this = this
+
+        window.chrome.tabs.executeScript({
+          code: 'window.getSelection().toString();'
+        }, function (selection) {
+          _this.ruleForm.source = selection[0]
+          _this.translate()
+        })
       }
     }
   }

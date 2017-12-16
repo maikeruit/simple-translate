@@ -8,9 +8,6 @@
   "author": {
     "message": "Iskander Kamaliev"
   },
-  "popularLanguage": {
-    "message": "Popular language"
-  },
   "english": {
     "message": "English"
   },
@@ -19,9 +16,6 @@
   },
   "german": {
     "message": "German"
-  },
-  "otherLanguages": {
-    "message": "Other languages"
   },
   "apiError": {
     "message": "Oops, extension didn't work :("
