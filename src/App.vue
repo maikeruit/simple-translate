@@ -107,7 +107,7 @@
         let _this = this
 
         window.chrome.storage.sync.get(['source', 'target'], function (items) {
-          if (items) {
+          if (items.source && items.target) {
             _this.source = items.source
             _this.target = items.target
           }
@@ -127,15 +127,16 @@
           'format': 'text',
           'model': 'nmt'
         }
-
-        axios
-          .post('https://translation.googleapis.com/language/translate/v2', qs.stringify(data))
-          .then(function ({data}) {
-            _this.ruleForm.target = data.data.translations[0].translatedText
-          })
-          .catch(function (response) {
-            _this.$message.error(window.chrome.i18n.getMessage('apiError'))
-          })
+        if (this.ruleForm.source) {
+          axios
+            .post('https://translation.googleapis.com/language/translate/v2', qs.stringify(data))
+            .then(function ({data}) {
+              _this.ruleForm.target = data.data.translations[0].translatedText
+            })
+            .catch(function (response) {
+              _this.$message.error(window.chrome.i18n.getMessage('apiError'))
+            })
+        }
       },
       clear: function () {
         this.$refs.ruleForm.resetFields()
