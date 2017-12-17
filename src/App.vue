@@ -66,8 +66,6 @@
 
 <script>
   import axios from 'axios'
-  import qs from 'qs'
-  import {API_KEY} from './config'
 
   export default {
     name: 'app',
@@ -119,23 +117,28 @@
     methods: {
       translate: function () {
         let _this = this
-        let data = {
-          'q': this.ruleForm.source,
-          'source': this.source,
-          'target': this.target,
-          'key': API_KEY,
-          'format': 'text',
-          'model': 'nmt'
-        }
+
+        this.ruleForm.target = ''
+
         if (this.ruleForm.source) {
-          axios
-            .post('https://translation.googleapis.com/language/translate/v2', qs.stringify(data))
-            .then(function ({data}) {
-              _this.ruleForm.target = data.data.translations[0].translatedText
-            })
-            .catch(function (response) {
-              _this.$message.error(window.chrome.i18n.getMessage('apiError'))
-            })
+          axios({
+            method: 'get',
+            url: 'https://translate.googleapis.com/translate_a/single',
+            params: {
+              client: 'gtx',
+              sl: _this.source,
+              tl: _this.target,
+              dt: 't',
+              q: _this.ruleForm.source
+            }
+          }).then(function ({data}) {
+            let tArr = data[0]
+            for (let i = 0; i < tArr.length; i++) {
+              _this.ruleForm.target += tArr[i][0]
+            }
+          }).catch(function (response) {
+            _this.$message.error(window.chrome.i18n.getMessage('apiError'))
+          })
         }
       },
       clear: function () {
